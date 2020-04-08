@@ -5,6 +5,7 @@ using namespace std;
 
 int START;
 int END;
+vector<vector<int> > paths;
 
 struct Edge {
 	int src, dest;
@@ -33,35 +34,24 @@ public:
 void printAllHamiltonianPaths(Graph const& g, int x, vector<bool>
 						visited, vector<int> &path, int N)
 {
-	// if all the vertices are visited, then
-	// Hamiltonian path exists
+	// if a path is found such taht it starts 
 	if (path.size() == N && *path.begin() == START && path[N-1] == END)
 	{
-
-		// print Hamiltonian path
-		for (int i : path)
-			cout << i << " ";
-		cout << endl;
-
+		paths.push_back(path);
 		return;
 	}
 
-	// Check if every edge starting from vertex v leads
-	// to a solution or not
-	for (int w : g.adj_list[x])
-	{
+	// Check if every edge starting from starting vertex x leads to a solution or not
+	for (int w : g.adj_list[x]) {
 		// process only unvisited vertices as Hamiltonian
 		// path visits each vertex exactly once
-		if (!visited[w])
-		{
+		if (!visited[w]) {
 			visited[w] = true;
 			path.push_back(w);
 
-			// check if adding vertex w to the path leads
-			// to solution or not
+			// check if adding vertex w to the path leads to solution or not
 			printAllHamiltonianPaths(g, w, visited, path, N);
 
-			// Backtrack
 			visited[w] = false;
 			path.pop_back();
 		}
@@ -77,7 +67,7 @@ int main() {
 		{0, 1}, {1, 2}, {1, 3}, {2, 3}
 	};
 	vector<int> vertices = {0,1,2,3};
-    cout<<"Choose from the following vertices:\n";
+    cout<<"Hamiltonion path starting at 0 and ending at 3:\n";
     cout<<"0,1,2,3\n";
 
     int start,end;
@@ -118,6 +108,17 @@ int main() {
 	END = end;
 
 	printAllHamiltonianPaths(g, start, visited, path, N);
+	
+	if(paths.empty()){
+		cout<<"Hamiltonion path does not exist starting at x: " << start << " and y: "<< end <<endl;
+		return 0;
+	}
+	for(vector<int> p : paths) {
+		for(int i : p){
+			cout<< i << " ";
+		}
+		cout<<endl;
+	}
 
 	return 0;
 }
