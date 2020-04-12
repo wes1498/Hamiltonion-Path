@@ -34,7 +34,7 @@ public:
 
 void print_hamiltonian_paths(Graph const& g, int x, vector<bool>visited, vector<int> &path, int N) {
 	// if a path is found such taht it starts 
-	if (path.size() == N && *path.begin() == START && path[N-1] == END)
+	if (path.size() == N && *path.begin() == START && path[N-1] == END && find(paths.begin(), paths.end(), path)==paths.end())
 	{
 		paths.push_back(path);
 		return;
@@ -178,11 +178,19 @@ void test_multiple_solutions() {
 
 }
 
+void test_undirected_graph() {
+	cout<<"test_small_undirected: Hamiltonion path starting at 0 and ending at 5:\n";
+	vector<Edge> edges = {{0, 2},{2, 0},{1, 2},{2, 1},{0, 4},{4, 0},{0, 5},{5, 0},{4, 5},{5, 4},
+						  {1, 4},{4, 1},{1, 5},{5, 1},{2, 3},{3, 2},{2, 4},{4, 2},{3, 4},{4, 3}};
+	vector<int> vertices = {0,1,2,3,4,5};
+	
+	set_up(vertices, edges);
+
+}
 // void test_undirected_graph() {
 // 	cout<<"test_small_undirected: Hamiltonion path starting at 0 and ending at 5:\n";
-// 	vector<Edge> edges = {{0, 2},{1, 2},{0, 4},{0, 5},{1, 4},{1, 5},{2, 3},{2, 4},{4, 5},{3, 4},
-// 						  {2, 0},{2, 1},{4, 0},{5, 0},{4, 1},{5, 1},{3, 2},{4, 2},{5, 4},{4, 3}};
-// 	vector<int> vertices = {0,1,2,3,4,5};
+// 	vector<Edge> edges = {{0, 1},{1, 0},{1, 2},{2, 1}};
+// 	vector<int> vertices = {0,1,2};
 	
 // 	set_up(vertices, edges);
 
@@ -196,7 +204,7 @@ int main() {
 	test_graph_large();
 	test_multiple_solutions();
 	test_large_DAG();
-	//test_undirected_graph();
+	test_undirected_graph();
 
 	return 0;
 }
